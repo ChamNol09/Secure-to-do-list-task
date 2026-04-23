@@ -1,4 +1,4 @@
-# 🛡 Secure To-Do List API (Backend)
+#  Secure To-Do List API (Backend)
 
 A secure, production-ready RESTful API for managing personal tasks with **Role-Based Access Control (RBAC)**.
 Built with **Node.js, Express, MySQL, and JWT Authentication**.
