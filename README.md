@@ -139,7 +139,7 @@ it's run by Immediately Invoked Function Expression in app.js
 ### 6. Run Server
 
 ```bash
-node src/app.js
+nodemon app.js
 ```
 
 ---
