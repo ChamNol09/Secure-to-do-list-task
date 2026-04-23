@@ -128,23 +128,10 @@ CREATE TABLE tasks (
 INSERT INTO roles (id, name) VALUES (1, 'admin'), (2, 'user');
 ```
 
-👉 Create Admin (use hashed password)
-
-You can generate hash using Node:
-
-```bash
-node
+ Create Admin (use hashed password)
 ```
-
-```js
-require("bcrypt").hashSync("admin123", 10);
-```
-
-Then insert:
-
-```sql
-INSERT INTO users (name, email, password, role_id)
-VALUES ('Admin', 'admin@gmail.com', 'HASHED_PASSWORD', 1);
+admin will create automatically when you start the project by seeds/adminSeed.js 
+it's run by Immediately Invoked Function Expression in app.js
 ```
 
 ---
