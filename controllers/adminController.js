@@ -43,9 +43,11 @@ const deleteUser = async (req, res) => {
 
 const getAllTasks = async (req, res) => {
   try {
-    const page = req.query.page;
+    let page = req.query.page;
     let limit = req.query.per_page;
     let { status } = req.query.status;
+    page = Number.isNaN(page) ||  page < 1 ? 1 : page;
+    limit = Number.isNaN(limit)||limit < 1 || limit > 100 ? 10 : limit;
     let result = await adminService.getAllTasks({
       page,
       limit,
