@@ -2,11 +2,19 @@ const adminService = require("../services/adminService");
 
 const getAllUsers = async (req, res) => {
   try {
-    const rows = await adminService.getAllUsers();
+    let page = req.query.page;
+    let limit = req.query.per_page;
+    let { status } = req.query.status;
+    const result = await adminService.getAllUsers({
+      page,
+      limit,
+      status,
+    });
     return res.status(200).json({
       result: true,
       msg: "Get all users successfully",
-      data: rows,
+      data: result.rows,
+      pagination : result.pagination
     });
   } catch (error) {
     console.log(error);
@@ -35,11 +43,19 @@ const deleteUser = async (req, res) => {
 
 const getAllTasks = async (req, res) => {
   try {
-    let rows = await adminService.getAllTasks();
+    const page = req.query.page;
+    let limit = req.query.per_page;
+    let { status } = req.query.status;
+    let result = await adminService.getAllTasks({
+      page,
+      limit,
+      status,
+    });
     return res.status(200).json({
       result: true,
       msg: "Get all tasks successfully",
-      data: rows,
+      data: result.rows,
+      paigination: result.pagination
     });
   } catch (error) {
     console.log(error);

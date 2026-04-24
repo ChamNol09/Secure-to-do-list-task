@@ -1,9 +1,21 @@
 const taskModel = require("../models/task");
 
-const getOwnTasks = async (id) => {
-  let rows = await taskModel.getOwnTasks(id);
-  return rows;
+const getOwnTasks = async ({ id, page, limit, status }) => {
+  
+  let rows = await taskModel.getOwnTasks({ id, page, limit, status });
+  let total = await taskModel.countTasks(id, status);
+
+  return {
+    rows,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    }
+  };
 };
+
 const createTask = async (body, id) => {
   let result = await taskModel.createTask(body, id);
   if (!result) {

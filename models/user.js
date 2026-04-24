@@ -1,11 +1,23 @@
 const pool = require('../configs/db');
 
-const getAllUsers = async () => {
-    const [rows] = await pool.query(
-        "select id, name, email, phone, address, is_verified,role_id, is_active, created_at, updated_at from users"
-    );
-    return rows;
-}
+const getAllUsers = async ({ page = 1, limit = 10, status }) => {
+  page = Number(page) || 1;
+  limit = Number(limit) || 10;
+  const offset = (page - 1) * limit;
+  let query = `
+    SELECT id, name, email, phone, address, is_verified, role_id, is_active, created_at, updated_at
+    FROM users
+  `;
+  let params = [];
+  if (status) {
+    query += " WHERE is_verified = ?";
+    params.push(status);
+  }
+  query += " LIMIT ? OFFSET ?";
+  params.push(limit, offset);
+  const [rows] = await pool.query(query, params);
+  return rows;
+};
 
 const getUserByEmail = async (email) => {
     const [row] = await pool.query(
@@ -96,6 +108,11 @@ const resendVerificationEmail = async (body) => {
     ); 
 }
 
+const countAllUsers = async () => {
+    const [rows] = await pool.query("SELECT COUNT(*) as total FROM users");
+    return rows[0].total;
+  };
+
 module.exports = {
     getAllUsers,
     create,
@@ -108,5 +125,6 @@ module.exports = {
     deleteToken,
     findVerificationEmail,
     verifyEmail,
-    resendVerificationEmail
+    resendVerificationEmail,
+    countAllUsers,
 }

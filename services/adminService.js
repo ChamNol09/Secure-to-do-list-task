@@ -1,42 +1,59 @@
-const userModel = require('../models/user');
-const taskModel = require('../models/task');
+const userModel = require("../models/user");
+const taskModel = require("../models/task");
 
-const getAllUsers = async () => {
-    let rows = await userModel.getAllUsers();
-    if (!rows) {
-        throw new Error("Cannot get users");
-    }
-    return rows;
-}
+const getAllUsers = async ({ page, limit, status }) => {
+  let rows = await userModel.getAllUsers({ page, limit, status });
+  let total = await userModel.countAllUsers();
+  if (!rows) {
+    throw new Error("Cannot get users");
+  }
+  return {
+    rows,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};
 
 const deleteUser = async (id) => {
-    let user = await userModel.getUserById(id);
-    if (!user) {
-        throw new Error("User not found");
-    }
-    await userModel.deleteUser(id);
-}
+  let user = await userModel.getUserById(id);
+  if (!user) {
+    throw new Error("User not found");
+  }
+  await userModel.deleteUser(id);
+};
 
-const getAllTasks = async () => {
-    let rows = await taskModel.getAllTasks();
-    if (!rows) {
-        throw new Error("Cannot get tasks");
-    }
-    return rows;
-}
+const getAllTasks = async ({ page, limit, status }) => {
+  let rows = await taskModel.getAllTasks({ page, limit, status });
+  let total = await taskModel.countAllTasks(status);
+  if (!rows) {
+    throw new Error("Cannot get tasks");
+  }
+  return {
+    rows,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};
 
-const deleteTask = async (id ) => {
-    let task = await taskModel.getTaskById(id);
-    if (!task) {
-        throw new Error("Task not found");
-    }
-    await taskModel.deleteTask(id);
-}
-
+const deleteTask = async (id) => {
+  let task = await taskModel.getTaskById(id);
+  if (!task) {
+    throw new Error("Task not found");
+  }
+  await taskModel.deleteTask(id);
+};
 
 module.exports = {
-    getAllUsers,
-    deleteUser,
-    getAllTasks,
-    deleteTask
-}
+  getAllUsers,
+  deleteUser,
+  getAllTasks,
+  deleteTask,
+};
