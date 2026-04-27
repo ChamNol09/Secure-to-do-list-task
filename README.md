@@ -56,9 +56,9 @@ Create a `.env` file in the root directory:
 PORT=3000
 # Database configuration
 DB_HOST=localhost
-DB_NAME=to_do_list
+DB_NAME=your_db_username
 DB_USERNAME=root
-DB_PASSWORD=Maochamnol123!
+DB_PASSWORD=your_db_password
 
 # Admin credentials
 ADMIN_USERNAME=admin
@@ -72,8 +72,8 @@ JWT_EXPIRED=1d
 # Mailer credentails
 MAIL_HOST=localhost
 MAIL_SERVICE=gmail
-MAIL_USER=maochamnol37@gmail.com
-MAIL_PASS=tyvzzhwzognefctb
+MAIL_USER=youremail@example.com
+MAIL_PASS=your_password_app_email
 ```
 
 ---
