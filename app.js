@@ -4,13 +4,11 @@ const cors = require('cors');
 const authRoute = require('./routes/auth');
 const adminRoute = require('./routes/adminRoute');
 const taskRoute = require('./routes/taskRoute');
-const { createAdmin }  = require('./seeds/adminSeed');
 const dotenv = require('dotenv');
+const helmet = require('helmet');
 dotenv.config();
 
-(async () => {
-    await createAdmin();
-})();
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoute);

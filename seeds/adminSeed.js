@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const pool = require("../configs/db");
 const userModel = require("../models/user");
+require('dotenv').config();
 
 const createAdmin = async () => {
   try {
@@ -15,7 +16,7 @@ const createAdmin = async () => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const data = {
+    const data = { 
       name: process.env.ADMIN_USERNAME,
       email: email,
       password: hashedPassword,
@@ -32,4 +33,4 @@ const createAdmin = async () => {
   }
 };
 
-module.exports = { createAdmin };
+createAdmin();

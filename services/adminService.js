@@ -19,6 +19,10 @@ const getAllUsers = async ({ page, limit, status }) => {
 };
 
 const deleteUser = async (id) => {
+  let checkUser = await userModel.getUserById(id);
+  if(checkUser.role_id == 1){
+    throw new Error("Your cannot delete this account");
+  }
   let user = await userModel.getUserById(id);
   if (!user) {
     throw new Error("User not found");

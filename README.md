@@ -130,8 +130,7 @@ INSERT INTO roles (id, name) VALUES (1, 'admin'), (2, 'user');
 
  Create Admin (use hashed password)
 ```
-admin will create automatically when you start the project by seeds/adminSeed.js 
-it's run by Immediately Invoked Function Expression in app.js
+npm run seed:admin
 ```
 
 ---

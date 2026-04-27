@@ -38,6 +38,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    // console.log(process.env.JWT_SECRET);
+    
     let result = await authService.login(req.body);
     return res.status(200).json({
       result: true,
@@ -54,7 +56,6 @@ const login = async (req, res) => {
 };
 
 const verificationEmail = async (req, res) => {
-  console.log(req.query.token);
   try {
     let result = await authService.verificationEmail(req.query.token);
     return res.status(200).json({
@@ -89,7 +90,6 @@ const resendVerificationEmail = async (req, res) => {
 
 const getMe = async (req, res) => {
   try {
-    console.log(req.user.id);
     let result = await authService.getMe(req.user.id);
     return res.status(200).json({
       result: true,
