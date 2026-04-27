@@ -54,20 +54,26 @@ Create a `.env` file in the root directory:
 
 ```env
 PORT=3000
-
-#### Database configuration
+# Database configuration
 DB_HOST=localhost
-DB_NAME=todo_db
+DB_NAME=to_do_list
 DB_USERNAME=root
 DB_PASSWORD=Maochamnol123!
 
-#### Admin credentials
+# Admin credentials
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=admin@123
 ADMIN_EMAIL=admin123@gmail.com
 
-#### JWT secret key
+#JWT secret key
 JWT_SECRET=secret_key
+JWT_EXPIRED=1d
+
+# Mailer credentails
+MAIL_HOST=localhost
+MAIL_SERVICE=gmail
+MAIL_USER=maochamnol37@gmail.com
+MAIL_PASS=tyvzzhwzognefctb
 ```
 
 ---
