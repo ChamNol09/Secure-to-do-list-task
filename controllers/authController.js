@@ -58,10 +58,11 @@ const login = async (req, res) => {
 const verificationEmail = async (req, res) => {
   try {
     let result = await authService.verificationEmail(req.query.token);
+    let row = await authService.getUserById(result[0].id);
     return res.status(200).json({
       result: true,
       msg: "Email verified successfully",
-      data: result,
+      data: row,
     });
   } catch (error) {
     console.log(error);
