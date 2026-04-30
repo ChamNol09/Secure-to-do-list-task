@@ -2,7 +2,8 @@ const userModel = require("../models/user");
 const taskModel = require("../models/task");
 
 const getAllUsers = async ({ page, limit, status }) => {
-  let rows = await userModel.getAllUsers({ page, limit, status });
+  let is_active = {status}.status;
+  let rows = await userModel.getAllUsers({ page, limit}, is_active);
   let total = await userModel.countAllUsers();
   if (!rows) {
     throw new Error("Cannot get users");
@@ -21,7 +22,7 @@ const getAllUsers = async ({ page, limit, status }) => {
 const deleteUser = async (id) => {
   let checkUser = await userModel.getUserById(id);
   if(checkUser.role_id == 1){
-    throw new Error("Your cannot delete this account");
+    throw new Error("Cannot delete admin account");
   }
   let user = await userModel.getUserById(id);
   if (!user) {
@@ -31,8 +32,9 @@ const deleteUser = async (id) => {
 };
 
 const getAllTasks = async ({ page, limit, status }) => {
-  let rows = await taskModel.getAllTasks({ page, limit, status });
-  let total = await taskModel.countAllTasks(status);
+  let checkStatus = {status}.status
+  let rows = await taskModel.getAllTasks({ page, limit }, checkStatus);
+  let total = await taskModel.countAllTasks(checkStatus);
   if (!rows) {
     throw new Error("Cannot get tasks");
   }

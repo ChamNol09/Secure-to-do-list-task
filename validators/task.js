@@ -21,7 +21,8 @@ const createTaskSchema = Joi.object({
         .messages({
             "any.only": "Status must be one of: pending, in progress, completed",
             "any.required": "Status is required"
-        })
+        }),
+        deadline: Joi.date().required()
 });
 
 const updateTaskSchema = Joi.object({

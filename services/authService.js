@@ -126,6 +126,44 @@ const resendVerificationEmail = async (email) => {
   };
 };
 
+const requestOtp = async (email) => {
+    let checkEmail = await userModel.getUserOtp(email);
+    if(!checkEmail){
+      throw new Error("Cannot find this user!")
+    }
+    const otp_code = crypto.randomInt(100000, 1000000);
+    const otp_expire = new Date(Date.now() + 5 * 60 * 1000);
+    await userModel.updateOtp(email, otp_code, otp_expire);
+    await mailService.sendVerificationOTP(email, otp_code);
+    return {
+      message: "Request OTP successfully!"
+    }
+}
+
+const verificationOtp = async(email, otp) => {
+    let verified = await userModel.getUserOtp(email);
+    if(!verified){
+      throw new Error("Cannot find this account!")
+    }
+    if(verified.otp_code !== String(otp) || verified.otp_expire < Date.now()){
+      throw new Error("Invalid or expired OTP")
+    }
+    return verified;
+}
+
+const resetPassword = async (email, newPassword, comfirmPassword) => {
+  let checkEmail = await userModel.getUserByEmail(email);
+  if(!checkEmail){
+    throw new Error("Cannot find this account")
+  }
+  if(newPassword !== comfirmPassword){
+    throw new Error("Password don't matching")
+  }
+  const hashPassword = await bcrypt.hash(newPassword, 10);
+  await userModel.updatePassword(email, hashPassword);
+  return true;
+}
+
 module.exports = {
   register,
   getUserByEmail,
@@ -134,5 +172,8 @@ module.exports = {
   getMe,
   logout,
   verificationEmail,
+  requestOtp,
+  verificationOtp,
+  resetPassword,
   resendVerificationEmail,
 };

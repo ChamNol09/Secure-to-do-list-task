@@ -11,6 +11,9 @@ router.post('/register', registerLimiter,validate(resgisterUserSchema), authCont
 router.post('/login',loginLimiter ,loginLimiter, validate(loginUserSchema), authController.login);
 router.get('/verify-email', apiLimiter, authController.verificationEmail);
 router.post('/resend-verification-email', apiLimiter, validate(resendVerificationEmailSchema), authController.resendVerificationEmail);
+router.post('/request-otp', loginLimiter, authController.requestOtp )
+router.post('/verify-otp', loginLimiter, authController.verificationOtp);
+router.put('/reset-password',loginLimiter, authController.resetPassword)
 router.get('/profile',apiLimiter, isLogin, authController.getMe);
 
 module.exports = router;

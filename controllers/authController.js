@@ -38,8 +38,6 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    // console.log(process.env.JWT_SECRET);
-    
     let result = await authService.login(req.body);
     return res.status(200).json({
       result: true,
@@ -89,6 +87,57 @@ const resendVerificationEmail = async (req, res) => {
   }
 };
 
+const requestOtp = async (req, res) => {
+  try {
+    await authService.requestOtp(req.body.email);
+    return res.status(200).json({
+      result: true,
+      msg: "Request OTP successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      result: false,
+      msg: error.message,
+    });
+  }
+};
+
+const verificationOtp = async(req, res) => {
+  try{
+    let result = await authService.verificationOtp(req.body.email, req.body.otp_code);
+    return res.status(200).json({
+      result: true,
+      msg: "Verification OTP successfully!",
+      data: result,
+    })
+  }
+  catch(error) {
+    console.log(error);
+    return res.status(500).json({
+      result: false,
+      msg: error.message
+    })
+  }
+}
+
+const resetPassword = async(req, res) => {
+  try {
+    let result = await authService.resetPassword(req.body.email, req.body.new_password, req.body.confirm_pass);
+    return res.status(200).json({
+      result: true,
+      msg: "Reset password successfully!",
+      data: result
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      result: false,
+      msg: error.message
+    })
+  }
+}
+
 const getMe = async (req, res) => {
   try {
     let result = await authService.getMe(req.user.id);
@@ -112,5 +161,8 @@ module.exports = {
   verificationEmail,
   login,
   resendVerificationEmail,
+  requestOtp,
+  verificationOtp,
+  resetPassword,
   getMe,
 };

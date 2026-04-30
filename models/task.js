@@ -1,9 +1,9 @@
 const pool = require("../configs/db");
 
 const createTask = async (body, user_id) => {
-  let arr = [body.title, body.description, body.status, user_id];
+  let arr = [body.title, body.description, body.status, body.deadline, user_id];
   const [result] = await pool.query(
-    "INSERT INTO tasks (title, description, status, user_id) VALUES (?, ?, ?, ?)",
+    "INSERT INTO tasks (title, description, status, deadline, user_id) VALUES (?, ?, ?, ?, ?)",
     arr,
   );
   return result.insertId;
@@ -11,7 +11,7 @@ const createTask = async (body, user_id) => {
 
 const getTaskById = async (id) => {
   const [row] = await pool.query(
-    "SELECT id, title, description, status, user_id, created_at, updated_at FROM tasks WHERE id = ?",
+    "SELECT id, title, description, status, user_id, deadline, created_at, updated_at FROM tasks WHERE id = ?",
     [id],
   );
   return row[0];
@@ -65,7 +65,7 @@ const countAllTasks = async (status) => {
   return rows[0].total;
 };
 
-const getAllTasks = async ({ page , limit , status }) => {
+const getAllTasks = async ({ page, limit }, status) => {
   page = Number(page) || 1;
   limit = Number(limit) || 10;
   const offset = (page - 1) * limit;

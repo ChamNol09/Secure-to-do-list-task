@@ -78,4 +78,41 @@ const sendVerificationEmail = async (to, token) => {
   });
 };
 
-module.exports = { sendVerificationEmail };
+const sendVerificationOTP = async (to, otp) => {
+  await transporter.sendMail({
+    from: `"My App" <noreply@myapp.com>`,
+    to,
+    subject: `${otp} is your verification code`,
+    html: `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h2 style="color: #333;">Verify Your Account</h2>
+      </div>
+      
+      <p style="font-size: 16px; color: #555;">Hi there,</p>
+      <p style="font-size: 16px; color: #555;">Use the following One-Time Password (OTP) to complete your verification. This code is valid for <b>10 minutes</b>.</p>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <div style="display: inline-block; padding: 15px 30px; background-color: #f3f4f6; border-radius: 8px; border: 1px dashed #4F46E5;">
+          <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #4F46E5;">${otp}</span>
+        </div>
+      </div>
+      
+      <p style="font-size: 14px; color: #888; text-align: center;">
+        If you didn't request this code, you can safely ignore this email.
+      </p>
+      
+      <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+      
+      <div style="font-size: 12px; color: #aaa; text-align: center;">
+        <p>&copy; ${new Date().getFullYear()} MyApp Inc. All rights reserved.</p>
+      </div>
+    </div>
+    `
+  });
+};
+
+module.exports = { 
+  sendVerificationEmail,
+  sendVerificationOTP,
+ };

@@ -7,7 +7,7 @@ const apiLimiter = rateLimit({
   legacyHeaders: false,
   message: {
     result: false,
-    msg: "Too many login attempts, try again later",
+    msg: "Too many requests attempts, try again later",
   },
 });
 

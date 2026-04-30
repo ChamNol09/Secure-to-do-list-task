@@ -4,7 +4,7 @@ const getAllUsers = async (req, res) => {
   try {
     let page = req.query.page;
     let limit = req.query.per_page;
-    let { status } = req.query.status;
+    let status  = req.query.status;
     const result = await adminService.getAllUsers({
       page,
       limit,
@@ -45,7 +45,7 @@ const getAllTasks = async (req, res) => {
   try {
     let page = req.query.page;
     let limit = req.query.per_page;
-    let { status } = req.query.status;
+    let status = req.query.status;
     page = Number.isNaN(page) ||  page < 1 ? 1 : page;
     limit = Number.isNaN(limit)||limit < 1 || limit > 100 ? 10 : limit;
     let result = await adminService.getAllTasks({
@@ -57,7 +57,7 @@ const getAllTasks = async (req, res) => {
       result: true,
       msg: "Get all tasks successfully",
       data: result.rows,
-      paigination: result.pagination
+      pagination: result.pagination
     });
   } catch (error) {
     console.log(error);

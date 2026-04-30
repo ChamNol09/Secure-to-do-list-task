@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoute = require('./routes/auth');
 const adminRoute = require('./routes/adminRoute');
 const taskRoute = require('./routes/taskRoute');
+const deadlineJob = require('./jobs/deadlineJob')
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 dotenv.config();
