@@ -125,6 +125,7 @@ CREATE TABLE tasks (
   description TEXT,
   status ENUM('pending', 'in progress', 'completed') DEFAULT 'pending',
   user_id INT NOT NULL,
+  deadline DATETIME NULL, 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id)
