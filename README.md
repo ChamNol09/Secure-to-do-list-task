@@ -74,6 +74,11 @@ MAIL_HOST=localhost
 MAIL_SERVICE=gmail
 MAIL_USER=youremail@example.com
 MAIL_PASS=your_password_app_email
+
+#Telegram configuration
+BOT_TOKEN=8623878098:AAHTsc3W6O1LmtcfylshTkLxrfl0GTv8W0Y
+USER_ID=1641253610
+
 ```
 
 ---
