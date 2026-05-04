@@ -174,6 +174,9 @@ Authorization: Bearer <your_token>
 - `GET /api/auth/verify-email`
 - `POST /api/auth/resend-verification-email`
 - `GET /api/auth/profile`
+- `POST /api/auth/request-otp`
+- `POST /api/auth/verify-otp`
+- `PUT /api/auth/reset-password`
 
 ---
 
