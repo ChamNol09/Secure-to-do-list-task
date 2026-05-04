@@ -5,9 +5,11 @@ const authRoute = require('./routes/auth');
 const adminRoute = require('./routes/adminRoute');
 const taskRoute = require('./routes/taskRoute');
 const deadlineJob = require('./jobs/deadlineJob')
+const telegramRoute = require('./routes/telegramRouter')
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 dotenv.config();
+require("./telegrams/bot");
 
 app.use(helmet());
 app.use(cors());
@@ -15,6 +17,7 @@ app.use(express.json());
 app.use('/api/auth', authRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/task', taskRoute);
+app.use('/api/telegram', telegramRoute)
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });

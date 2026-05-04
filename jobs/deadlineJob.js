@@ -4,25 +4,32 @@ const telegramService = require("../services/telegramService");
 
 cron.schedule("* * * * *", async () => {
   try {
-    console.log("Checking deadlines...");
-
+    // console.log("Checking deadlines...");
     const [tasks] = await pool.query(`
-      SELECT * FROM tasks
-      WHERE deadline IS NOT NULL
-        AND is_notified = 0
-        AND TIMESTAMPDIFF(MINUTE, NOW(), deadline) = 5;
+      SELECT t.*, u.chat_id
+      FROM tasks t
+      JOIN users u ON t.user_id = u.id
+      WHERE t.deadline IS NOT NULL
+        AND t.is_notified = 0
+        AND TIMESTAMPDIFF(MINUTE, NOW(), t.deadline) BETWEEN 4 AND 5
     `);
-    console.log(tasks[0].id);
-    
-    await pool.query("UPDATE tasks SET is_notified = 1 WHERE id = ?", [
-      tasks[0].id,
-    ]);
+
+    if (tasks.length === 0) return; 
+
     for (let task of tasks) {
+      if (!task.chat_id) continue;
+
       await telegramService.sendMessage(
-        process.env.CHAT_ID,
-        `⏰ Task Reminder: "${task.title}" is due in 5 minutes, please finish your task!`,
+        task.chat_id,
+        `⏰ Task Reminder: "${task.title}" is due in 5 minutes!`
+      );
+
+      await pool.query(
+        "UPDATE tasks SET is_notified = 1 WHERE id = ?",
+        [task.id]
       );
     }
+
   } catch (error) {
     console.error("Cron error:", error);
   }

@@ -6,7 +6,7 @@ const sendMessage = async (chatId, message) => {
   const url = `https://api.telegram.org/bot${token}/sendMessage`;
 
   await axios.post(url, {
-    chat_id: process.env.USER_ID,
+    chat_id: chatId,
     text: message,
   });
 };
