@@ -26,6 +26,8 @@ Built with **Node.js, Express, MySQL, and JWT Authentication**.
 - MySQL
 - JWT (jsonwebtoken)
 - bcrypt
+- telegram bot
+- cron job (for schedule)
 
 ---
 
