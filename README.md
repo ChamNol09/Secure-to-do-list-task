@@ -181,6 +181,10 @@ Authorization: Bearer <your_token>
 - `PUT /api/auth/reset-password`
 
 ---
+### Telegram Connection
+- `GET /api/telegram/connect`
+
+---
 
 ### User Tasks
 
