@@ -36,8 +36,8 @@ Built with **Node.js, Express, MySQL, and JWT Authentication**.
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/ChamNol09/Secure-to-do-list.git
-cd secure-to-do-list
+git clone https://github.com/ChamNol09/Secure-to-do-list-task.git
+cd secure-to-do-list-task
 ```
 
 ---
