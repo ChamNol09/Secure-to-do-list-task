@@ -77,7 +77,7 @@ MAIL_PASS=your_password_app_email
 
 #Telegram configuration
 BOT_TOKEN=your_telegram_bot_token
-USER_ID=telegram_chat_id
+BOT_USERNAME=your_bot_username
 
 ```
 
@@ -114,6 +114,8 @@ CREATE TABLE users (
   verification_expires DATETIME,
   email_verified_at DATETIME,
   last_login_at DATETIME,
+  telegram_token VARCHAR(255) NULL,
+  chat_id BIGINT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (role_id) REFERENCES roles(id)
