@@ -1,6 +1,5 @@
 const telegramService = require("./telegramService");
 
-// user clicks "Connect Telegram"
 const createTelegramLink = async (req, res) => {
   try {
     const token = await telegramService.generateToken(req.user.id);
