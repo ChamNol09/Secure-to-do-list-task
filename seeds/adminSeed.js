@@ -27,7 +27,7 @@ const createAdmin = async () => {
       "Insert into users (name, email, password, role_id, is_verified) values (?, ?, ?, ?, ?)",
       [data.name, data.email, data.password, data.role_id, data.is_verified],
     );
-    // console.log("Admin user created successfully");
+    console.log("Admin user created successfully");
   } catch (error) {
     console.error(error.message);
   }
