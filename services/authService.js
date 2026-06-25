@@ -14,13 +14,13 @@ const register = async (body) => {
 
   const hashPassword = await bcrypt.hash(body.password, 10);
   const verificationToken = crypto.randomBytes(20).toString("hex");
-  const verificationExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+  const verification_expire = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
   let result = await userModel.create({
     name: body.name,
     email: body.email,
     password: hashPassword,
     verificationToken,
-    verificationExpires,
+    verification_expire,
   });
   await mailService.sendVerificationEmail(body.email, verificationToken);
   let row = await userModel.getUserById(result);

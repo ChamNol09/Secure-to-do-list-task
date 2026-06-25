@@ -67,7 +67,7 @@ const create = async (body) => {
     body.email,
     body.password,
     body.verificationToken,
-    body.verificationExpires,
+    body.verification_expire,
   ];
   const [result] = await pool.query(
     "Insert into users (name, email, password, verification_token, verification_expire) values (?, ?, ?, ?, ?)",
