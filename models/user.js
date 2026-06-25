@@ -121,7 +121,7 @@ const deleteToken = async (id) => {
 
 const findVerificationEmail = async (token) => {
   let [result] = await pool.query(
-    "select id, name, email, phone, address, role_id, is_verified, verification_token, verification_expires from users where verification_token = ?",
+    "select id, name, email, phone, address, role_id, is_verified, verification_token, verification_expire from users where verification_token = ?",
     [token],
   );
   return result;
@@ -138,7 +138,7 @@ const verifyEmail = async (id) => {
 const resendVerificationEmail = async (body) => {
   let arr = [body.verificationToken, body.verificationExpires, body.id];
   await pool.query(
-    "update users set verification_token = ?, verification_expires = ? where id = ?",
+    "update users set verification_token = ?, verification_expire = ? where id = ?",
     arr,
   );
 };
