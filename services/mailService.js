@@ -1,7 +1,8 @@
 const transporter = require('../configs/mailer');
+require('dotenv').config();
 
 const sendVerificationEmail = async (to, token) => {
-  const verificationLink = `http://localhost:3000/api/auth/verify-email?token=${token}`;
+  const verificationLink = `${process.env.BASE_URL}/api/auth/verify-email?token=${token}`;
 
   await transporter.sendMail({
     from: `My App <noreply@myapp.com>`, // Professional "From" header
