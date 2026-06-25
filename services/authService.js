@@ -14,7 +14,7 @@ const register = async (body) => {
 
   const hashPassword = await bcrypt.hash(body.password, 10);
   const verificationToken = crypto.randomBytes(20).toString("hex");
-  const verification_expire = new Date(Date.now() + 1440 * 60 * 1000); // 1 hour
+  const verification_expire = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
   let result = await userModel.create({
     name: body.name,
     email: body.email,
@@ -93,8 +93,8 @@ const verificationEmail = async (token) => {
     throw new Error("Email already verified");
   }
   if (
-    !userInfo[0].verification_expires ||
-    new Date(userInfo[0].verification_expires) < new Date()
+    !userInfo[0].verification_expire ||
+    new Date(userInfo[0].verification_expire) < new Date()
   ) {
     throw new Error("Verification token has expired");
   }
