@@ -70,7 +70,7 @@ const create = async (body) => {
     body.verificationExpires,
   ];
   const [result] = await pool.query(
-    "Insert into users (name, email, password, verification_token, verification_expires) values (?, ?, ?, ?, ?)",
+    "Insert into users (name, email, password, verification_token, verification_expire) values (?, ?, ?, ?, ?)",
     arr,
   );
   return result.insertId;
