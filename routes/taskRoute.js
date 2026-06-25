@@ -7,9 +7,9 @@ const validate = require('../middlewares/validate');
 const { createTaskSchema, updateTaskSchema } = require('../validators/task');
 const { apiLimiter } = require('../middlewares/rateLimit')
 
-router.post('/create', apiLimiter, isLogin, authoriz("user"), validate(createTaskSchema), taskController.createTask);
-router.get('/own-tasks', apiLimiter, isLogin, authoriz("user"), taskController.getOwnTasks);
-router.put('/update/:id', apiLimiter, isLogin, authoriz("user"), validate(updateTaskSchema), taskController.updateTask);
-router.delete('/delete/:id', apiLimiter, isLogin, authoriz("user"), taskController.deleteTask);
+router.post('/create', apiLimiter, isLogin, authoriz("User"), validate(createTaskSchema), taskController.createTask);
+router.get('/own-tasks', apiLimiter, isLogin, authoriz("User"), taskController.getOwnTasks);
+router.put('/update/:id', apiLimiter, isLogin, authoriz("User"), validate(updateTaskSchema), taskController.updateTask);
+router.delete('/delete/:id', apiLimiter, isLogin, authoriz("User"), taskController.deleteTask);
 
 module.exports = router;
