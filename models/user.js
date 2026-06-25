@@ -1,176 +1,256 @@
 const pool = require("../configs/db");
 
-const getAllUsers = async ({ page = 1, limit = 10 }, is_active) => {
+const getAllUsers = async ({ page = 1, limit = 10 }, is_active = "") => {
   page = Number(page) || 1;
   limit = Number(limit) || 10;
-  const offset = (page - 1) * limit;
 
-  let query = `
-    SELECT id, name, email, phone, address, is_verified, role_id, is_active, created_at, updated_at
+  const offset = (page - 1) * limit;
+  let sql = `
+    SELECT
+      id,
+      name,
+      email,
+      phone,
+      address,
+      role_id,
+      is_verified,
+      is_active,
+      created_at,
+      updated_at
     FROM users
   `;
 
-  let params = [];
+  const params = [];
 
   if (is_active !== "") {
-    query += " WHERE is_active = ?";
+    sql += " WHERE is_active = ?";
     params.push(is_active);
   }
 
-  query += " LIMIT ? OFFSET ?";
+  sql += " LIMIT ? OFFSET ?";
+
   params.push(limit, offset);
 
-  const [rows] = await pool.query(query, params);
+  const [rows] = await pool.query(sql, params);
+
   return rows;
 };
 
 const getUserByEmail = async (email) => {
-  const [row] = await pool.query(
-    "select id, name, email, password, phone, address, is_verified, role_id from users where email = ?",
-    [email],
+  const [rows] = await pool.query(
+    `
+    SELECT *
+    FROM users
+    WHERE email = ?
+    `,
+    [email]
   );
-  return row[0];
-};
 
-const getUserOtp = async (email) => {
-  const [row] = await pool.query(
-    "select id, name, email, password, phone, address, is_verified, role_id, otp_code, otp_expire from users where email = ?",
-    [email],
-  );
-  return row[0];
+  return rows[0];
 };
-
-const updateOtp = async (email, otp_code, otp_expire) =>{
-      let arr = [
-        otp_code,
-        otp_expire,
-        email
-  ];
-  let [row] = await pool.query(
-    "update users set otp_code = ?, otp_expire = ? where email = ?",
-    arr,
-  );
-  return row;
-}
 
 const getUserById = async (id) => {
-  const [row] = await pool.query(
-    "select id, name, email, phone, address, is_verified, role_id, token, created_at, updated_at from users where id = ?",
-    [id],
+  const [rows] = await pool.query(
+    `
+    SELECT
+      id,
+      name,
+      email,
+      phone,
+      address,
+      role_id,
+      is_verified,
+      is_active,
+      created_at,
+      updated_at
+    FROM users
+    WHERE id = ?
+    `,
+    [id]
   );
-  return row[0];
+
+  return rows[0];
 };
 
 const create = async (body) => {
-  let arr = [
-    body.name,
-    body.email,
-    body.password,
-    body.verificationToken,
-    body.verification_expire,
-  ];
   const [result] = await pool.query(
-    "Insert into users (name, email, password, verification_token, verification_expire) values (?, ?, ?, ?, ?)",
-    arr,
+    `
+    INSERT INTO users
+    (
+      name,
+      email,
+      password,
+      otp_code,
+      otp_expire
+    )
+    VALUES
+    (
+      ?, ?, ?, ?, ?
+    )
+    `,
+    [
+      body.name,
+      body.email,
+      body.password,
+      body.otp_code,
+      body.otp_expire,
+    ]
   );
+
   return result.insertId;
 };
 
 const updateUser = async (id, body) => {
-  let arr = [
-    body.name,
-    body.email,
-    body.phone,
-    body.address,
-    body.is_active,
-    id,
-  ];
-  let [row] = await pool.query(
-    "update users set name = ?, email = ?, phone = ?, address = ?,  is_active = ? where id = ?",
-    arr,
+  const [result] = await pool.query(
+    `
+    UPDATE users
+    SET
+      name = ?,
+      email = ?,
+      phone = ?,
+      address = ?,
+      is_active = ?
+    WHERE id = ?
+    `,
+    [
+      body.name,
+      body.email,
+      body.phone,
+      body.address,
+      body.is_active,
+      id,
+    ]
   );
-  return row;
+
+  return result;
 };
 
 const deleteUser = async (id) => {
-  await pool.query("delete from users where id = ? ", [id]);
+  await pool.query(
+    "DELETE FROM users WHERE id = ?",
+    [id]
+  );
 };
 
 const addToken = async (token, id) => {
-  const [result] = await pool.query("Update users set token = ? where id = ?", [
-    token,
-    id,
-  ]);
-  return result;
-};
-
-const getUserByToken = async (token) => {
-  const [row] = await pool.query("Select * from users where token = ?", [
-    token,
-  ]);
-  return row;
+  await pool.query(
+    `
+    UPDATE users
+    SET token = ?
+    WHERE id = ?
+    `,
+    [token, id]
+  );
 };
 
 const deleteToken = async (id) => {
-  const [result] = await pool.query(
-    "Update users set token = null where id = ?",
-    [id],
+  await pool.query(
+    `
+    UPDATE users
+    SET token = NULL
+    WHERE id = ?
+    `,
+    [id]
   );
-  return result;
 };
 
-const findVerificationEmail = async (token) => {
-  let [result] = await pool.query(
-    "select id, name, email, phone, address, role_id, is_verified, verification_token, verification_expire from users where verification_token = ?",
-    [token],
+const getUserByToken = async (token) => {
+  const [rows] = await pool.query(
+    `
+    SELECT *
+    FROM users
+    WHERE token = ?
+    `,
+    [token]
   );
-  return result;
+
+  return rows[0];
 };
+
 
 const verifyEmail = async (id) => {
-  let [result] = await pool.query(
-    "update users set is_verified = 1 where id = ?",
-    [id],
-  );
-  return result;
-};
-
-const resendVerificationEmail = async (body) => {
-  let arr = [body.verificationToken, body.verificationExpires, body.id];
   await pool.query(
-    "update users set verification_token = ?, verification_expire = ? where id = ?",
-    arr,
+    `
+    UPDATE users
+    SET
+      is_verified = 1,
+      email_verified_at = NOW(),
+      otp_code = NULL,
+      otp_expire = NULL
+    WHERE id = ?
+    `,
+    [id]
   );
 };
 
-const updatePassword = async(email, password) => {
-    let arr = [
-        password,
-        email
+const findVerificationOtp = async (email, otp) => {
+  const [rows] = await pool.query(
+    `
+    SELECT *
+    FROM users
+    WHERE email = ?
+      AND otp_code = ?
+    `,
+    [email, otp]
+  );
+
+  return rows[0];
+};
+
+const updateOtp = async (email, otp_code, otp_expire) => {
+  await pool.query(
+    `
+    UPDATE users
+    SET
+      otp_code = ?,
+      otp_expire = ?
+    WHERE email = ?
+    `,
+    [
+      otp_code,
+      otp_expire,
+      email,
     ]
-    let [result] = await pool.query("update users set password = ? where email = ?", arr)
-    return result[0];
-}
+  );
+};
+
+const updatePassword = async (email, password) => {
+  await pool.query(
+    `
+    UPDATE users
+    SET password = ?
+    WHERE email = ?
+    `,
+    [
+      password,
+      email,
+    ]
+  );
+};
 
 const countAllUsers = async () => {
-  const [rows] = await pool.query("SELECT COUNT(*) as total FROM users");
+  const [rows] = await pool.query(
+    `
+    SELECT COUNT(*) AS total
+    FROM users
+    `
+  );
+
   return rows[0].total;
 };
 
 module.exports = {
   getAllUsers,
+  getUserByEmail,
+  getUserById,
   create,
   updateUser,
   deleteUser,
-  getUserByEmail,
-  getUserById,
-  getUserByToken,
   addToken,
   deleteToken,
-  findVerificationEmail,
+  getUserByToken,
   verifyEmail,
-  resendVerificationEmail,
-  getUserOtp,
+  findVerificationOtp,
   updateOtp,
   updatePassword,
   countAllUsers,

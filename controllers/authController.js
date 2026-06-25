@@ -55,15 +55,18 @@ const login = async (req, res) => {
 
 const verificationEmail = async (req, res) => {
   try {
-    let result = await authService.verificationEmail(req.query.token);
-    let row = await authService.getUserById(result[0].id);
+    const result = await authService.verificationEmail(
+      req.body.email,
+      req.body.otp_code,
+    );
     return res.status(200).json({
       result: true,
       msg: "Email verified successfully",
-      data: row,
+      data: result,
     });
   } catch (error) {
     console.log(error);
+
     return res.status(500).json({
       result: false,
       msg: error.message,
@@ -103,40 +106,46 @@ const requestOtp = async (req, res) => {
   }
 };
 
-const verificationOtp = async(req, res) => {
-  try{
-    let result = await authService.verificationOtp(req.body.email, req.body.otp_code);
+const verificationOtp = async (req, res) => {
+  try {
+    let result = await authService.verificationOtp(
+      req.body.email,
+      req.body.otp_code,
+    );
     return res.status(200).json({
       result: true,
       msg: "Verification OTP successfully!",
       data: result,
-    })
-  }
-  catch(error) {
+    });
+  } catch (error) {
     console.log(error);
     return res.status(500).json({
       result: false,
-      msg: error.message
-    })
+      msg: error.message,
+    });
   }
-}
+};
 
-const resetPassword = async(req, res) => {
+const resetPassword = async (req, res) => {
   try {
-    let result = await authService.resetPassword(req.body.email, req.body.new_password, req.body.confirm_pass);
+    let result = await authService.resetPassword(
+      req.body.email,
+      req.body.new_password,
+      req.body.confirm_pass,
+    );
     return res.status(200).json({
       result: true,
       msg: "Reset password successfully!",
-      data: result
-    })
+      data: result,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       result: false,
-      msg: error.message
-    })
+      msg: error.message,
+    });
   }
-}
+};
 
 const getMe = async (req, res) => {
   try {

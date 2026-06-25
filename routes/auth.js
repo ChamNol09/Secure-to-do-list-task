@@ -9,7 +9,7 @@ const { apiLimiter, loginLimiter, registerLimiter} = require('../middlewares/rat
 
 router.post('/register', registerLimiter,validate(resgisterUserSchema), authController.register);
 router.post('/login',loginLimiter ,loginLimiter, validate(loginUserSchema), authController.login);
-router.get('/verify-email', apiLimiter, authController.verificationEmail);
+router.post('/verify-email', apiLimiter, authController.verificationEmail);
 router.post('/resend-verification-email', apiLimiter, validate(resendVerificationEmailSchema), authController.resendVerificationEmail);
 router.post('/request-otp', loginLimiter, authController.requestOtp )
 router.post('/verify-otp', loginLimiter, authController.verificationOtp);

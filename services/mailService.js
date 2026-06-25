@@ -81,7 +81,7 @@ const sendVerificationEmail = async (to, token) => {
 
 const sendVerificationOTP = async (to, otp) => {
   await transporter.sendMail({
-    from: `"My App" <noreply@myapp.com>`,
+    from: `"Todo List" <noreply@todo.com>`,
     to,
     subject: `${otp} is your verification code`,
     html: `
