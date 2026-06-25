@@ -1,3 +1,4 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -6,7 +7,6 @@ const adminRoute = require('./routes/adminRoute');
 const taskRoute = require('./routes/taskRoute');
 const deadlineJob = require('./jobs/deadlineJob')
 const telegramRoute = require('./routes/telegramRouter')
-const dotenv = require('dotenv');
 const helmet = require('helmet');
 dotenv.config();
 require("./telegrams/bot");
