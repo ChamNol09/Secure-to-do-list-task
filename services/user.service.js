@@ -24,7 +24,7 @@ const updaloadAvatar = async (id, file) => {
 
   await userModel.updaloadAvatar(id, imagePath);
   let row = await userModel.getUserById(id);
-  row.avatar = `${process.env.BASE_URL}${row.avatar}`;
+//   row.avatar = `${process.env.BASE_URL}${row.avatar}`;
   return row;
 };
 
