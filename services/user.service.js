@@ -20,7 +20,7 @@ const updaloadAvatar = async (id, file) => {
       console.log("Old image deleted");
     }
   }
-  const imagePath = `/upload/avatars/${file.filename}`;
+  const imagePath = `${process.env.BASE_URL}/upload/avatars/${file.filename}`;
 
   await userModel.updaloadAvatar(id, imagePath);
   let row = await userModel.getUserById(id);
@@ -35,7 +35,7 @@ const removeAvatar = async (id) => {
   }
   let user = checkUser;
   await userModel.removeAvatar(id);
-  
+
   if (user.avatar) {
     const oldImagePath = path.join(__dirname, "..", user.avatar);
     if (fs.existsSync(oldImagePath)) {
