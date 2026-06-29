@@ -10,6 +10,7 @@ const getAllUsers = async ({ page = 1, limit = 10 }, is_active = "") => {
       id,
       name,
       email,
+      avatar,
       phone,
       address,
       role_id,
@@ -43,7 +44,7 @@ const getUserByEmail = async (email) => {
     FROM users
     WHERE email = ?
     `,
-    [email]
+    [email],
   );
 
   return rows[0];
@@ -56,6 +57,7 @@ const getUserById = async (id) => {
       id,
       name,
       email,
+      avatar,
       phone,
       address,
       role_id,
@@ -66,7 +68,7 @@ const getUserById = async (id) => {
     FROM users
     WHERE id = ?
     `,
-    [id]
+    [id],
   );
 
   return rows[0];
@@ -88,13 +90,7 @@ const create = async (body) => {
       ?, ?, ?, ?, ?
     )
     `,
-    [
-      body.name,
-      body.email,
-      body.password,
-      body.otp_code,
-      body.otp_expire,
-    ]
+    [body.name, body.email, body.password, body.otp_code, body.otp_expire],
   );
 
   return result.insertId;
@@ -112,24 +108,14 @@ const updateUser = async (id, body) => {
       is_active = ?
     WHERE id = ?
     `,
-    [
-      body.name,
-      body.email,
-      body.phone,
-      body.address,
-      body.is_active,
-      id,
-    ]
+    [body.name, body.email, body.phone, body.address, body.is_active, id],
   );
 
   return result;
 };
 
 const deleteUser = async (id) => {
-  await pool.query(
-    "DELETE FROM users WHERE id = ?",
-    [id]
-  );
+  await pool.query("DELETE FROM users WHERE id = ?", [id]);
 };
 
 const addToken = async (token, id) => {
@@ -139,7 +125,7 @@ const addToken = async (token, id) => {
     SET token = ?
     WHERE id = ?
     `,
-    [token, id]
+    [token, id],
   );
 };
 
@@ -150,7 +136,7 @@ const deleteToken = async (id) => {
     SET token = NULL
     WHERE id = ?
     `,
-    [id]
+    [id],
   );
 };
 
@@ -161,12 +147,11 @@ const getUserByToken = async (token) => {
     FROM users
     WHERE token = ?
     `,
-    [token]
+    [token],
   );
 
   return rows[0];
 };
-
 
 const verifyEmail = async (id) => {
   await pool.query(
@@ -179,7 +164,7 @@ const verifyEmail = async (id) => {
       otp_expire = NULL
     WHERE id = ?
     `,
-    [id]
+    [id],
   );
 };
 
@@ -191,7 +176,7 @@ const findVerificationOtp = async (email, otp) => {
     WHERE email = ?
       AND otp_code = ?
     `,
-    [email, otp]
+    [email, otp],
   );
 
   return rows[0];
@@ -206,11 +191,7 @@ const updateOtp = async (email, otp_code, otp_expire) => {
       otp_expire = ?
     WHERE email = ?
     `,
-    [
-      otp_code,
-      otp_expire,
-      email,
-    ]
+    [otp_code, otp_expire, email],
   );
 };
 
@@ -221,10 +202,7 @@ const updatePassword = async (email, password) => {
     SET password = ?
     WHERE email = ?
     `,
-    [
-      password,
-      email,
-    ]
+    [password, email],
   );
 };
 
@@ -233,10 +211,17 @@ const countAllUsers = async () => {
     `
     SELECT COUNT(*) AS total
     FROM users
-    `
+    `,
   );
 
   return rows[0].total;
+};
+
+const updaloadAvatar = async (id, image) => {
+  await pool.query("update users set avatar = ? where id = ?", [image, id]);
+};
+const removeAvatar = async (id) => {
+  await pool.query("update users set avatar = null where id = ?", [id]);
 };
 
 module.exports = {
@@ -254,4 +239,6 @@ module.exports = {
   updateOtp,
   updatePassword,
   countAllUsers,
+  updaloadAvatar,
+  removeAvatar,
 };

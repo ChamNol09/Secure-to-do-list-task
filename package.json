@@ -22,9 +22,10 @@
     "helmet": "^8.1.0",
     "joi": "^18.1.2",
     "jsonwebtoken": "^9.0.3",
+    "multer": "^2.2.0",
     "mysql2": "^3.22.2",
     "node-cron": "^4.2.1",
-    "node-telegram-bot-api": "^0.67.0",
-    "nodemailer": "^8.0.5"
+    "node-telegram-bot-api": "^1.1.2",
+    "nodemailer": "^9.0.1"
   }
 }
