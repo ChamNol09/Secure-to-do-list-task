@@ -28,7 +28,6 @@ const register = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-
     return res.status(500).json({
       result: true,
       msg: error.message,
@@ -66,7 +65,6 @@ const verificationEmail = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-
     return res.status(500).json({
       result: false,
       msg: error.message,

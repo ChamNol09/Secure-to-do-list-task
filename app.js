@@ -18,9 +18,9 @@ app.use(
     crossOriginResourcePolicy: { policy: "cross-origin" },
   }),
 );
-app.use("/upload", express.static(path.join(__dirname, "upload")));
 app.use(cors());
 app.use(express.json());
+app.use("/upload", express.static(path.join(__dirname, "upload")));
 app.use("/api/auth", authRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/task", taskRoute);
