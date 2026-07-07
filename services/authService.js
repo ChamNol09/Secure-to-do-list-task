@@ -147,7 +147,7 @@ const requestOtp = async (email) => {
 };
 
 const verificationOtp = async (email, otp) => {
-  let verified = await userModel.getUserOtp(email);
+  let verified = await userModel.getUserByEmail(email);
   if (!verified) {
     throw new Error("Cannot find this account!");
   }
