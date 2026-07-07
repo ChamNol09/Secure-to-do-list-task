@@ -133,7 +133,7 @@ const resendVerificationEmail = async(email)=>{
 }
 
 const requestOtp = async (email) => {
-  let checkEmail = await userModel.getUserOtp(email);
+  let checkEmail = await userModel.getUserByEmail(email);
   if (!checkEmail) {
     throw new Error("Cannot find this user!");
   }
